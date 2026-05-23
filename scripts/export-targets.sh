@@ -13,7 +13,12 @@ csv=$(
         OS=${BASH_REMATCH[1]};
         ARCH=${BASH_REMATCH[2]};
         
-        echo "$OS/$ARCH"
+        # OpenBao OCI puller expects linux/arm64/v8 variant
+        if [[ "$OS" == "linux" && "$ARCH" == "arm64" ]]; then
+            echo "$OS/$ARCH/v8"
+        else
+            echo "$OS/$ARCH"
+        fi
     fi
   done | sort -u | paste -sd,
 )
