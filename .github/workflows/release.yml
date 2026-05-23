@@ -179,13 +179,24 @@ jobs:
       - name: Create manifest list
         run: |
           docker buildx imagetools create \
-            -t ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }} \
-            ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-amd64 \
-            ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-arm64 \
-            ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-amd64 \
-            ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-arm64 \
-            ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-amd64 \
-            ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-arm64
+            --tag ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }} \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-amd64 | jq -r '. | "\(.config.digest)@darwin/amd64"' ) \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-arm64 | jq -r '. | "\(.config.digest)@darwin/arm64"' ) \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-amd64 | jq -r '. | "\(.config.digest)@linux/amd64"' ) \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-arm64 | jq -r '. | "\(.config.digest)@linux/arm64"' ) \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-amd64 | jq -r '. | "\(.config.digest)@windows/amd64"' ) \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-arm64 | jq -r '. | "\(.config.digest)@windows/arm64"' )
+
+          # Now fix the linux/arm64 entry to add v8 variant
+          # Pull the manifest list, replace the arm64 platform with arm64/v8, push back
+          docker buildx imagetools create \
+            --tag ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }} \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-amd64 | jq -r '.manifests[0].digest + "@darwin/amd64"') \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-arm64 | jq -r '.manifests[0].digest + "@darwin/arm64"') \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-amd64 | jq -r '.manifests[0].digest + "@linux/amd64"') \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-arm64 | jq -r '.manifests[0].digest + "@linux/arm64/v8"') \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-amd64 | jq -r '.manifests[0].digest + "@windows/amd64"') \
+            $(docker buildx imagetools inspect --raw ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-arm64 | jq -r '.manifests[0].digest + "@windows/arm64"')
 
   update-wiki:
     name: Update Wiki
