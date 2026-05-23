@@ -169,19 +169,16 @@ jobs:
             BIN=${{ env.OUTPUT_DIR }}
             PLUGIN_NAME=${{ env.PLUGIN_NAME }}
 
+      - name: Install oras
+        uses: oras-project/setup-oras@v1
+
       - name: Fix arm64 variant in manifest list
         run: |
           TAG=${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}
           IMG=${{ env.IMAGE_NAME }}
-          DIGEST=$(docker buildx imagetools inspect --raw "$TAG" | jq -r '.manifests[] | select(.platform.architecture == "arm64" and .platform.os == "linux") | .digest')
-          docker buildx imagetools create \
-            -t "$TAG" \
-            $(docker buildx imagetools inspect --raw "$TAG" | jq -r '.manifests[] | select(.platform.architecture == "amd64" and .platform.os == "darwin") | .digest + "@" + .platform.architecture + "/" + .platform.os') \
-            $(docker buildx imagetools inspect --raw "$TAG" | jq -r '.manifests[] | select(.platform.architecture == "arm64" and .platform.os == "darwin") | .digest + "@" + .platform.architecture + "/" + .platform.os') \
-            $(docker buildx imagetools inspect --raw "$TAG" | jq -r '.manifests[] | select(.platform.architecture == "amd64" and .platform.os == "linux") | .digest + "@" + .platform.architecture + "/" + .platform.os') \
-            "$DIGEST@linux/arm64/v8" \
-            $(docker buildx imagetools inspect --raw "$TAG" | jq -r '.manifests[] | select(.platform.architecture == "amd64" and .platform.os == "windows") | .digest + "@" + .platform.architecture + "/" + .platform.os') \
-            $(docker buildx imagetools inspect --raw "$TAG" | jq -r '.manifests[] | select(.platform.architecture == "arm64" and .platform.os == "windows") | .digest + "@" + .platform.architecture + "/" + .platform.os')
+          docker buildx imagetools inspect --raw "$TAG" > /tmp/orig.json
+          jq '.manifests |= map(if .platform.architecture == "arm64" and .platform.os == "linux" then .platform.variant = "v8" else . end)' /tmp/orig.json > /tmp/fixed.json
+          oras manifest push "$TAG" /tmp/fixed.json
 
   update-wiki:
     name: Update Wiki
