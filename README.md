@@ -31,15 +31,15 @@ Create a configuration registering the plugin:
 > The pre-filled sha256sum is for the linux-amd64 build.
 > The value should be updated with the appropriate hash for
 > your execution environment. You can find sums for all releases 
-> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.3).
+> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.4).
 
 ```sh
 cat << EOF > openbao-config.hcl 
 plugin "secret" "nats" {
     image = "ghcr.io/gabber235/openbao-plugin-secrets-nats"
-    version = "v1.5.3"
+    version = "v1.5.4"
     binary_name = "openbao-plugin-secrets-nats"
-    sha256sum = "07c1e6162130806b8ec5e41e33f86ec410bbac8f6455002760796668f36ab53a"
+    sha256sum = "7bfb3a010683b4b46e57529a7c8a06d36f089f02c9c526c2c4bbcf76720dd9af"
 }
 
 plugin_directory = "$HOME/openbao_plugins" # or wherever it pleases
@@ -76,7 +76,7 @@ $ bao server -dev -config=openbao-config.hcl
 
 <!-- BEGIN CLI SAMPLE -->
 Download the appropriate binary for your platform from the 
-[release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.3).
+[release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.4).
 Place the downloaded and decompressed `openbao-plugin-secrets-nats` binary in the configured plugin directory.
 
 In a separate terminal, register the plugin with the following command:
@@ -85,12 +85,12 @@ In a separate terminal, register the plugin with the following command:
 > The pre-filled sha256sum is for the linux-amd64 build.
 > The value should be updated with the appropriate hash for
 > your execution environment. You can find sums for all releases 
-> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.3).
+> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.4).
 
 ```sh
 $ bao plugin register \
-    -version="v1.5.3" \
-    -sha256="07c1e6162130806b8ec5e41e33f86ec410bbac8f6455002760796668f36ab53a" \ 
+    -version="v1.5.4" \
+    -sha256="7bfb3a010683b4b46e57529a7c8a06d36f089f02c9c526c2c4bbcf76720dd9af" \ 
     -command="openbao-plugin-secrets-nats" \
     nats
 Success! Registered plugin: nats
