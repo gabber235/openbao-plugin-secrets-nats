@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"slices"
 
-	"github.com/bonesofgiants/openbao-plugin-secrets-nats/pkg/shimtx"
+	"github.com/gabber235/openbao-plugin-secrets-nats/pkg/shimtx"
 	"github.com/nats-io/jwt/v2"
 	"github.com/openbao/openbao/sdk/v2/framework"
 	"github.com/openbao/openbao/sdk/v2/logical"

@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bonesofgiants/openbao-plugin-secrets-nats/pkg/abstractnats"
-	"github.com/bonesofgiants/openbao-plugin-secrets-nats/pkg/accountserver"
+	"github.com/gabber235/openbao-plugin-secrets-nats/pkg/abstractnats"
+	"github.com/gabber235/openbao-plugin-secrets-nats/pkg/accountserver"
 	"github.com/nats-io/jwt/v2"
 	nats "github.com/nats-io/nats.go"
 	"github.com/nats-io/nkeys"

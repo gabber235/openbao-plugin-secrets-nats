@@ -20,12 +20,12 @@ this plugin should be usable as a Vault plugin with no modifications.
 
 ## Setup
 
-A quickstart guide is also available in the [README](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats?tab=readme-ov-file#quickstart).
+A quickstart guide is also available in the [README](https://github.com/gabber235/openbao-plugin-secrets-nats?tab=readme-ov-file#quickstart).
 
 ### OCI Image
 
 This plugin is available as an OCI image and can be installed & registered via the [declarative plugin](https://openbao.org/docs/configuration/plugins/) configuration block in the OpenBao configuration.
-The latest release can be found on the [Releases page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases) of the repository.
+The latest release can be found on the [Releases page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases) of the repository.
 
 > [!IMPORTANT]
 > Declarative plugins require a OpenBao version `2.5.0` or higher
@@ -34,7 +34,7 @@ Replace the version and sha256sum fields with the correct values for the release
 
 ```hcl
 plugin "secret" "nats" {
-    image = "ghcr.io/bonesofgiants/openbao-plugin-secrets-nats"
+    image = "ghcr.io/gabber235/openbao-plugin-secrets-nats"
     version = "v0.0.0"
     binary_name = "openbao-plugin-secrets-nats"
     sha256sum = "dec5b2c17a4616de030d7945cf4b4eeb87c037a30e4fa3b99c2bd4502e25e1bc"
@@ -43,7 +43,7 @@ plugin "secret" "nats" {
 
 ### Release Binary
 
-This plugin is also available as a prebuilt binary in the [Releases page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases) of the repository.
+This plugin is also available as a prebuilt binary in the [Releases page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases) of the repository.
 
 The binary must be placed within the configured `plugin_directory` as part of your OpenBao deployment.
 

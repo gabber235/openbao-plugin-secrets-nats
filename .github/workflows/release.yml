@@ -15,7 +15,7 @@ env:
   OUTPUT_DIR: bin
   RELEASE_DIR: release
   PLUGIN_NAME: openbao-plugin-secrets-nats
-  IMAGE_NAME: ghcr.io/bonesofgiants/openbao-plugin-secrets-nats
+  IMAGE_NAME: ghcr.io/gabber235/openbao-plugin-secrets-nats
 
 jobs:
   version:
@@ -101,8 +101,8 @@ jobs:
         uses: EndBug/add-and-commit@v9.1.4
         with:
           add: README.md
-          author_name: BonesOfGiantsCurator
-          author_email: 121028010+BonesOfGiantsCurator@users.noreply.github.com
+          author_name: github-actions[bot]
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
           message: |
             chore: Release ${{ needs.version.outputs.tag }}
 

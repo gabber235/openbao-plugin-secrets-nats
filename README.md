@@ -13,7 +13,7 @@ To learn specifically about how plugins work, see documentation on [OpenBao plug
 
 ## Usage
 
-Detailed [documentation](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/wiki) and [API reference](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/wiki/API) are available in the repository wiki.
+Detailed [documentation](https://github.com/gabber235/openbao-plugin-secrets-nats/wiki) and [API reference](https://github.com/gabber235/openbao-plugin-secrets-nats/wiki/API) are available in the repository wiki.
 
 ### Quickstart
 
@@ -31,12 +31,12 @@ Create a configuration registering the plugin:
 > The pre-filled sha256sum is for the linux-amd64 build.
 > The value should be updated with the appropriate hash for
 > your execution environment. You can find sums for all releases 
-> on the [release page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases/tag/v1.5.2).
+> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.2).
 
 ```sh
 cat << EOF > openbao-config.hcl 
 plugin "secret" "nats" {
-    image = "ghcr.io/bonesofgiants/openbao-plugin-secrets-nats"
+    image = "ghcr.io/gabber235/openbao-plugin-secrets-nats"
     version = "v1.5.2"
     binary_name = "openbao-plugin-secrets-nats"
     sha256sum = "a7b0f8456d28708ccba478d4b0a26fd28507d5faa6e39c96ded5e70d1a8b6f6f"
@@ -76,7 +76,7 @@ $ bao server -dev -config=openbao-config.hcl
 
 <!-- BEGIN CLI SAMPLE -->
 Download the appropriate binary for your platform from the 
-[release page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases/tag/v1.5.2).
+[release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.2).
 Place the downloaded and decompressed `openbao-plugin-secrets-nats` binary in the configured plugin directory.
 
 In a separate terminal, register the plugin with the following command:
@@ -85,7 +85,7 @@ In a separate terminal, register the plugin with the following command:
 > The pre-filled sha256sum is for the linux-amd64 build.
 > The value should be updated with the appropriate hash for
 > your execution environment. You can find sums for all releases 
-> on the [release page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases/tag/v1.5.2).
+> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/v1.5.2).
 
 ```sh
 $ bao plugin register \

@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	nats "github.com/bonesofgiants/openbao-plugin-secrets-nats"
+	nats "github.com/gabber235/openbao-plugin-secrets-nats"
 	"github.com/openbao/openbao/api/v2"
 	"github.com/openbao/openbao/sdk/v2/plugin"
 )

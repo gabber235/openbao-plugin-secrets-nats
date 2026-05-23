@@ -12,7 +12,7 @@ note="> [!NOTE]
 > The pre-filled sha256sum is for the linux-amd64 build.
 > The value should be updated with the appropriate hash for
 > your execution environment. You can find sums for all releases 
-> on the [release page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases/tag/$TAG)."
+> on the [release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/$TAG)."
 
 declarative="$note
 
@@ -33,7 +33,7 @@ EOF
 ${delim}"
 
 cli="Download the appropriate binary for your platform from the 
-[release page](https://github.com/BonesOfGiants/openbao-plugin-secrets-nats/releases/tag/$TAG).
+[release page](https://github.com/gabber235/openbao-plugin-secrets-nats/releases/tag/$TAG).
 Place the downloaded and decompressed \`openbao-plugin-secrets-nats\` binary in the configured plugin directory.
 
 In a separate terminal, register the plugin with the following command:

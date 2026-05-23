@@ -1,19 +1,19 @@
 NAME := openbao-plugin-secrets-nats
-IMAGE_NAME := ghcr.io/bonesofgiants/openbao-plugin-secrets-nats
+IMAGE_NAME := ghcr.io/gabber235/openbao-plugin-secrets-nats
 VERSION := v0.0.0
 GOOS := linux
 GOARCH := amd64
-REGISTRY := ghcr.io/bonesofgiants
+REGISTRY := ghcr.io/gabber235
 OUTPUT_DIR := bin
 RELEASE_DIR := release
-GITHUB_REPOSITORY := BonesOfGiants/openbao-plugin-secrets-nats
+GITHUB_REPOSITORY := gabber235/openbao-plugin-secrets-nats
 
 .PHONY: build
 build:
 	@GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 \
 		go build \
 		-o $(OUTPUT_DIR)/$(NAME)-$(GOOS)-$(GOARCH) \
-		-ldflags '-s -w -X github.com/bonesofgiants/openbao-plugin-secrets-nats.PluginVersion=$(VERSION)' ./cmd
+		-ldflags '-s -w -X github.com/gabber235/openbao-plugin-secrets-nats.PluginVersion=$(VERSION)' ./cmd
 	
 .PHONY: package
 package:

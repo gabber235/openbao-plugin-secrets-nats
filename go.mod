@@ -1,4 +1,4 @@
-module github.com/bonesofgiants/openbao-plugin-secrets-nats
+module github.com/gabber235/openbao-plugin-secrets-nats
 
 go 1.25.5
 

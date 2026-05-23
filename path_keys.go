@@ -8,7 +8,7 @@ import (
 	"iter"
 	"net/http"
 
-	"github.com/bonesofgiants/openbao-plugin-secrets-nats/pkg/shimtx"
+	"github.com/gabber235/openbao-plugin-secrets-nats/pkg/shimtx"
 	"github.com/openbao/openbao/sdk/v2/framework"
 	"github.com/openbao/openbao/sdk/v2/logical"
 

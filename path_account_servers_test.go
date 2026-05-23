@@ -8,8 +8,8 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/bonesofgiants/openbao-plugin-secrets-nats/pkg/abstractnats"
-	"github.com/bonesofgiants/openbao-plugin-secrets-nats/pkg/accountserver"
+	"github.com/gabber235/openbao-plugin-secrets-nats/pkg/abstractnats"
+	"github.com/gabber235/openbao-plugin-secrets-nats/pkg/accountserver"
 	nats "github.com/nats-io/nats.go"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
