@@ -173,12 +173,12 @@ jobs:
         run: |
           TOKEN=$(curl -s "https://ghcr.io/token?scope=repository:${{ github.repository_owner }}/openbao-plugin-secrets-nats:pull,push&service=ghcr.io" -u "${{ github.actor }}:${{ github.token }}" | jq -r '.token')
           MANIFEST=$(curl -s -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.oci.image.index.v1+json" "https://ghcr.io/v2/${{ github.repository_owner }}/openbao-plugin-secrets-nats/manifests/${{ needs.version.outputs.tag }}")
-          echo "Current manifest platforms:" && echo "$MANIFEST" | jq '[.manifests[] | {platform, digest}]'
           FIXED=$(echo "$MANIFEST" | jq '.manifests |= map(if .platform.architecture == "arm64" and .platform.os == "linux" then .platform.variant = "v8" else . end)')
-          echo "Fixed manifest platforms:" && echo "$FIXED" | jq '[.manifests[] | {platform, digest}]'
-          STATUS=$(echo "$FIXED" | curl -s -o /dev/null -w "%{http_code}" -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/vnd.oci.image.index.v1+json" --data-binary @- "https://ghcr.io/v2/${{ github.repository_owner }}/openbao-plugin-secrets-nats/manifests/${{ needs.version.outputs.tag }}")
-          echo "Push status: $STATUS"
-          if [ "$STATUS" != "201" ]; then echo "ERROR: expected 201, got $STATUS"; exit 1; fi
+          # Push fixed manifest to a new tag, then retag
+          FIXED_DIGEST=$(echo "$FIXED" | curl -s -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/vnd.oci.image.index.v1+json" --data-binary @- "https://ghcr.io/v2/${{ github.repository_owner }}/openbao-plugin-secrets-nats/manifests/${{ needs.version.outputs.tag }}-fixed" -o /dev/null -D - | grep -i docker-content-digest | awk '{print $2}' | tr -d '\r')
+          echo "Fixed manifest digest: $FIXED_DIGEST"
+          # Now tag this digest as the release tag
+          curl -s -X PUT -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/vnd.oci.image.index.v1+json" --data-binary @- "https://ghcr.io/v2/${{ github.repository_owner }}/openbao-plugin-secrets-nats/manifests/${{ needs.version.outputs.tag }}" <<< "$FIXED" -o /dev/null -w "%{http_code}"
 
   update-wiki:
     name: Update Wiki
