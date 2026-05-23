@@ -182,31 +182,23 @@ jobs:
       - name: Create manifest list with crane
         run: |
           TAG=${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}
+          IMG=${{ env.IMAGE_NAME }}
           
+          # First platform creates the initial index
           crane index append \
             --platform darwin/amd64 \
-            -m ${{ env.IMAGE_NAME }}@$(crane digest ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-amd64) \
+            -m "$IMG@$(crane digest $IMG:${{ needs.version.outputs.tag }}-darwin-amd64)" \
             -t "$TAG"
-          crane index append \
-            --platform darwin/arm64 \
-            -m ${{ env.IMAGE_NAME }}@$(crane digest ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-darwin-arm64) \
-            -t "$TAG"
-          crane index append \
-            --platform linux/amd64 \
-            -m ${{ env.IMAGE_NAME }}@$(crane digest ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-amd64) \
-            -t "$TAG"
-          crane index append \
-            --platform linux/arm64/v8 \
-            -m ${{ env.IMAGE_NAME }}@$(crane digest ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-linux-arm64) \
-            -t "$TAG"
-          crane index append \
-            --platform windows/amd64 \
-            -m ${{ env.IMAGE_NAME }}@$(crane digest ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-amd64) \
-            -t "$TAG"
-          crane index append \
-            --platform windows/arm64 \
-            -m ${{ env.IMAGE_NAME }}@$(crane digest ${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-windows-arm64) \
-            -t "$TAG"
+          
+          # Subsequent platforms append to existing index
+          for plat in "darwin/arm64:darwin-arm64" "linux/amd64:linux-amd64" "linux/arm64/v8:linux-arm64" "windows/amd64:windows-amd64" "windows/arm64:windows-arm64"; do
+            plat_name="${plat%%:*}"
+            suffix="${plat##*:}"
+            crane manifest "$TAG" | crane index append \
+              --platform "$plat" \
+              -m "$IMG@$(crane digest $IMG:${{ needs.version.outputs.tag }}-$suffix)" \
+              -t "$TAG"
+          done
 
   update-wiki:
     name: Update Wiki
