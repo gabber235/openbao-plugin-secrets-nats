@@ -155,13 +155,20 @@ jobs:
 
       - name: Build and push per platform
         run: |
-          PLATFORMS=("darwin/amd64" "darwin/arm64" "linux/amd64" "linux/arm64/v8" "windows/amd64" "windows/arm64")
-          for plat in "${PLATFORMS[@]}"; do
-            tag_suffix=$(echo "$plat" | tr '/' '-' | tr -d 'v')
+          declare -A PLATFORM_TAGS=(
+            ["darwin/amd64"]="darwin-amd64"
+            ["darwin/arm64"]="darwin-arm64"
+            ["linux/amd64"]="linux-amd64"
+            ["linux/arm64/v8"]="linux-arm64"
+            ["windows/amd64"]="windows-amd64"
+            ["windows/arm64"]="windows-arm64"
+          )
+          for plat in "${!PLATFORM_TAGS[@]}"; do
+            suffix="${PLATFORM_TAGS[$plat]}"
             docker buildx build \
               --push \
               --platform "$plat" \
-              --tag "${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-$tag_suffix" \
+              --tag "${{ env.IMAGE_NAME }}:${{ needs.version.outputs.tag }}-$suffix" \
               --annotation org.opencontainers.image.source=https://github.com/${{ github.repository }} \
               --build-arg BIN=${{ env.OUTPUT_DIR }} \
               --build-arg PLUGIN_NAME=${{ env.PLUGIN_NAME }} \
