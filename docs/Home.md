@@ -623,6 +623,18 @@ fields, or the generated user won't have permissions to do anything.
 ```
 </details>
 
+### Configuring implicit lease revocations
+
+The plugin exposes global configuration at `nats/config`.
+
+```sh
+bao write nats/config implicit_revocations_enabled=false
+```
+
+`implicit_revocations_enabled` controls whether revoking an OpenBao lease for `nats/creds/...` creates a NATS account revocation for the user's public key. It defaults to `false`, so normal lease cleanup or ESO refreshes will not revoke the NATS user. Set it to `true` to restore the previous behavior.
+
+Explicit revocations are unaffected by this setting. The `nats/revocations/...` endpoint, user `revoke_on_delete`, and `rotate-user` with `revoke=true` still create account revocations.
+
 ### Revoking user credentials
 
 Requesting user credentials also issues a lease that is valid for the ttl of the generated credentials.
@@ -630,7 +642,7 @@ Credential leases are non-renewable and the lease time can't be shortened.
 
 If left untouched, a lease that expires will result in a noop, as the JWT will naturally expire at that time.
 
-However, credential leases may also be revoked prematurely. Revoking a credential prematurely results in a 
+If `implicit_revocations_enabled=true`, credential leases may also be revoked prematurely. Revoking a credential prematurely results in a 
 revocation entry being created for the user identity key. The revocation will have a TTL of the remaining TTL
 of the JWT. For standard users, it is not possible to revoke a *specific* set of credentials. Since revocations
 are keyed to the identity key, revoking one lease will revoke *all* credentials for that user for the period.

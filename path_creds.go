@@ -364,6 +364,15 @@ func (b *backend) generateUserCreds(idKey nkeys.KeyPair, signingKey nkeys.KeyPai
 }
 
 func (b *backend) userCredsRevoke(ctx context.Context, req *logical.Request, data *framework.FieldData) (*logical.Response, error) {
+	cfg, err := b.Config(ctx, req.Storage)
+	if err != nil {
+		return nil, err
+	}
+	if !cfg.ImplicitRevocationsEnabled {
+		b.Logger().Debug("skipping implicit user credential revocation because implicit revocations are disabled")
+		return nil, nil
+	}
+
 	expRaw := req.Secret.InternalData["exp"]
 
 	exp := time.Unix(int64(expRaw.(float64)), 0)

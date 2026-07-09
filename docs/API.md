@@ -12,6 +12,7 @@ update your API calls accordingly.
 <summary>Table of Contents</summary>
 
 - [Quick Reference](#quick-reference)
+  - [Plugin configuration](#plugin-configuration)
   - [Operator management](#operator-management)
   - [Account management](#account-management)
   - [User management](#user-management)
@@ -219,6 +220,53 @@ update your API calls accordingly.
   - [Sample response](#sample-response-25)
 
 </details>
+
+## Plugin configuration
+
+This endpoint configures global behavior for the NATS secrets engine.
+
+| Method   | Path           |
+| :------- | :------------- |
+| `POST`   | `/nats/config` |
+| `PUT`    | `/nats/config` |
+| `GET`    | `/nats/config` |
+| `DELETE` | `/nats/config` |
+
+### Request parameters
+
+- `implicit_revocations_enabled` `(bool: false)` - Whether revoking an OpenBao lease for `nats/creds/...` should create a NATS account revocation for the user's public key. This defaults to `false`, so ESO refreshes and other lease cleanup do not revoke the NATS user. Explicit revocations through `nats/revocations/...`, user `revoke_on_delete`, and `rotate-user` with `revoke=true` are unaffected.
+
+### Sample payload
+
+```json
+{
+  "implicit_revocations_enabled": false
+}
+```
+
+### Sample request
+
+```sh
+$ curl \
+    --header "X-Vault-Token: ..." \
+    --request POST \
+    --data @payload.json \
+    http://127.0.0.1:8200/v1/nats/config
+```
+
+### Response parameters
+
+- `implicit_revocations_enabled` `(bool)` - Whether implicit lease revocations are enabled.
+
+### Sample response
+
+```json
+{
+  "data": {
+    "implicit_revocations_enabled": false
+  }
+}
+```
 
 ## Quick Reference
 

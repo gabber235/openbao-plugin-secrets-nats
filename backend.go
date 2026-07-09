@@ -144,6 +144,7 @@ func Backend() *backend {
 			},
 		},
 		Paths: framework.PathAppend(
+			pathConfigBackend(&b),
 			pathUserCreds(&b),
 			pathEphemeralUserCreds(&b),
 			pathJWT(&b),
@@ -158,6 +159,7 @@ func Backend() *backend {
 			pathRotate(&b),
 			pathUtilities(&b),
 			pathListOperator(&b, []string{
+				backendConfigPath,
 				operatorsPathPrefix,
 				operatorSigningKeysPathPrefix,
 				operatorGenerateServerConfigPathPrefix,
